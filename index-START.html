@@ -19,10 +19,12 @@ const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb
 
 const cities = [];
 
+//fetch and push city data to array
 fetch(endpoint)
   .then(blob => blob.json())
   .then(data => cities.push(...data));
 
+//filter array to find matches
 function findMatches(wordToMatch, cities){
   return cities.filter(place => {
     const regex = new RegExp(wordToMatch, 'gi');
@@ -30,6 +32,12 @@ function findMatches(wordToMatch, cities){
   });
 }
 
+//add commas to population numbers
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+//display matches 
 function displayMatches(){
   const matchArray = findMatches(this.value, cities);
   // console.log(matchArray);
@@ -40,7 +48,7 @@ function displayMatches(){
     return `
     <li>
       <span class="name">${cityName}, ${stateName}</span>
-      <span class="population">${place.population}</span>
+      <span class="population">${numberWithCommas(place.population)}</span>
     </li>`;
   }).join('');
   suggestions.innerHTML = html;
